@@ -31,18 +31,37 @@
     overflow-x: hidden;
   }
 
+  /* Subtle grid background */
+  body::before {
+    content: "";
+    position: fixed;
+    top: 0; left: 0; width: 100%; height: 100%;
+    background-image: 
+      linear-gradient(var(--border) 1px, transparent 1px),
+      linear-gradient(90deg, var(--border) 1px, transparent 1px);
+    background-size: 50px 50px;
+    opacity: 0.1;
+    z-index: -1;
+  }
+
   header {
     padding: 2rem;
     border-bottom: 1px solid var(--border);
     display: flex;
     justify-content: space-between;
     align-items: center;
-    background: var(--surface);
+    background: rgba(17, 21, 32, 0.8);
+    backdrop-filter: blur(10px);
+    position: sticky;
+    top: 0;
+    z-index: 100;
   }
+
+  .logo-group h1 { font-weight: 800; letter-spacing: -1px; font-size: 1.5rem; color: #fff; }
 
   .meta-grid {
     display: grid;
-    grid-template-columns: repeat(4, 1fr);
+    grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
     gap: 1.5rem;
     padding: 2rem;
   }
@@ -50,51 +69,91 @@
   .meta-card {
     background: var(--surface2);
     border: 1px solid var(--border);
-    padding: 1rem;
-    border-radius: 8px;
+    padding: 1.25rem;
+    border-radius: 12px;
+    position: relative;
+    overflow: hidden;
   }
 
-  .label { font-size: 0.75rem; color: var(--muted); text-transform: uppercase; margin-bottom: 0.5rem; }
-  .value { font-family: 'Space Mono', monospace; font-size: 1.25rem; color: var(--accent); }
+  .meta-card::after {
+    content: "";
+    position: absolute;
+    top: 0; left: 0; width: 4px; height: 100%;
+    background: var(--accent);
+  }
+
+  .label { font-size: 0.7rem; color: var(--muted); text-transform: uppercase; letter-spacing: 1px; margin-bottom: 0.5rem; font-weight: 700; }
+  .value { font-family: 'Space Mono', monospace; font-size: 1.5rem; color: var(--accent); font-weight: 700; }
 
   #map-container {
     padding: 0 2rem;
-    margin-bottom: 2rem;
+    margin-bottom: 3rem;
   }
 
   svg {
     width: 100%;
     background: var(--surface);
     border: 1px solid var(--border);
-    border-radius: 12px;
+    border-radius: 16px;
+    box-shadow: 0 20px 50px rgba(0,0,0,0.3);
   }
 
-  .site-node { fill: var(--dim); stroke: var(--border); stroke-width: 2; }
-  .site-node.deployed { fill: var(--success); stroke: #fff; }
-  .site-label { font-size: 10px; fill: var(--muted); font-family: 'Space Mono', monospace; }
-  .site-label.deployed { fill: #fff; }
+  .site-node { fill: var(--dim); stroke: var(--border); stroke-width: 2; transition: all 0.3s; }
+  .site-node.deployed { fill: var(--success); stroke: #fff; filter: drop-shadow(0 0 8px var(--success)); }
+  .site-node.aborted { fill: var(--danger); stroke: #fff; }
+  
+  .site-label { font-size: 10px; fill: var(--muted); font-family: 'Space Mono', monospace; pointer-events: none; }
+  .site-label.active { fill: #fff; font-weight: bold; }
 
-  /* Timeline Styles */
+  .path-line { stroke: var(--dim); stroke-width: 1; stroke-dasharray: 4; fill: none; }
+
+  /* Timeline & Filter */
+  .timeline-controls {
+    padding: 0 2rem 1rem;
+    display: flex;
+    gap: 1rem;
+    align-items: center;
+  }
+
+  .toggle-btn {
+    background: var(--surface2);
+    border: 1px solid var(--border);
+    color: var(--muted);
+    padding: 0.5rem 1rem;
+    border-radius: 6px;
+    cursor: pointer;
+    font-family: 'Space Mono', monospace;
+    font-size: 0.8rem;
+    transition: all 0.2s;
+  }
+
+  .toggle-btn.active { background: var(--accent); color: var(--bg); border-color: var(--accent); font-weight: bold; }
+
   .timeline { padding: 0 2rem 4rem; }
-  .timeline-row { margin-bottom: 3rem; }
+  .timeline-row { margin-bottom: 4rem; }
+  
   .row-header { 
     display: flex; 
     align-items: center; 
     gap: 1rem; 
-    margin-bottom: 1.5rem;
-    border-left: 4px solid var(--accent);
-    padding-left: 1rem;
+    margin-bottom: 2rem;
+    border-bottom: 1px solid var(--border);
+    padding-bottom: 0.5rem;
   }
-  .row-label { font-weight: 800; font-size: 1.5rem; }
+  .row-label { font-weight: 800; font-size: 1.8rem; color: #fff; }
+  .row-stats { font-family: 'Space Mono', monospace; font-size: 0.9rem; color: var(--muted); }
 
-  .site-group { display: flex; flex-direction: column; gap: 1rem; margin-bottom: 2rem; }
+  .site-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(400px, 1fr)); gap: 2rem; }
+
+  .site-group { position: relative; }
   .site-badge {
     display: inline-block;
-    padding: 0.25rem 0.75rem;
+    padding: 0.3rem 0.8rem;
     border-radius: 4px;
-    font-size: 0.8rem;
-    font-weight: bold;
-    margin-bottom: 0.5rem;
+    font-size: 0.75rem;
+    font-weight: 800;
+    margin-bottom: 1rem;
+    font-family: 'Space Mono', monospace;
   }
   .row0 { background: var(--accent); color: #000; }
   .row1 { background: var(--accent2); color: #fff; }
@@ -104,45 +163,111 @@
   .step {
     background: var(--surface2);
     border: 1px solid var(--border);
-    border-radius: 6px;
-    padding: 0.75rem;
-    margin-bottom: 0.5rem;
+    border-radius: 8px;
+    padding: 1rem;
+    margin-bottom: 0.75rem;
     cursor: pointer;
-    transition: all 0.2s;
+    transition: transform 0.2s, border-color 0.2s;
+    position: relative;
   }
 
-  .step:hover { border-color: var(--accent); }
-  .step-header { display: flex; justify-content: space-between; font-family: 'Space Mono', monospace; font-size: 0.9rem; }
-  .fn-name { color: var(--accent); font-weight: bold; }
-  .step-reasoning { font-size: 0.85rem; color: var(--muted); margin-top: 0.5rem; line-height: 1.4; }
+  .step:hover { border-color: var(--accent); transform: translateX(5px); }
+  .step.success { border-left: 4px solid var(--success); }
+  .step.error { border-left: 4px solid var(--danger); }
+  .step.navigation { border-left: 4px solid var(--warn); }
+  .step.complete { border: 2px solid var(--accent); background: rgba(0, 229, 255, 0.05); }
+
+  .step-header { display: flex; justify-content: space-between; align-items: center; margin-bottom: 0.5rem; }
+  .fn-name { font-family: 'Space Mono', monospace; font-weight: 700; color: var(--accent); font-size: 0.95rem; }
+  .step-status { font-family: 'Space Mono', monospace; font-size: 0.7rem; padding: 2px 6px; border-radius: 3px; }
+  .ok { background: rgba(34, 211, 160, 0.1); color: var(--success); }
+  .fail { background: rgba(239, 68, 68, 0.1); color: var(--danger); }
+
+  .step-reasoning { font-size: 0.85rem; color: var(--text); line-height: 1.5; margin-bottom: 0.5rem; }
   
-  .step-detail { display: none; margin-top: 1rem; padding-top: 1rem; border-top: 1px solid var(--border); font-family: 'Space Mono', monospace; font-size: 0.8rem; white-space: pre-wrap; color: #aaa; }
+  .expand-hint { font-size: 0.65rem; color: var(--dim); text-align: center; border-top: 1px solid var(--dim); padding-top: 5px; margin-top: 10px; font-weight: bold; }
+
+  .step-detail { 
+    display: none; 
+    margin-top: 1rem; 
+    padding: 1rem; 
+    background: var(--bg); 
+    border-radius: 6px;
+    font-family: 'Space Mono', monospace; 
+    font-size: 0.75rem; 
+    white-space: pre-wrap; 
+    color: #8892b0; 
+    border: 1px solid var(--border);
+    overflow-x: auto;
+  }
   .step.expanded .step-detail { display: block; }
 
-  .expand-hint { font-size: 0.7rem; color: var(--dim); text-align: center; margin-top: 5px; }
+  /* Utility */
+  .hidden { display: none !important; }
 </style>
 </head>
 <body>
 
 <header>
-  <h1>LLM MISSION LOG <span id="mission-id" style="color:var(--accent)">-</span></h1>
+  <div class="logo-group">
+    <h1>MISSION_PLANNER <span id="mission-id" style="color:var(--muted); font-weight:400; font-family:'Space Mono'">LOAD LOG...</span></h1>
+  </div>
   <div id="controls">
     <input type="file" id="file-input" style="display:none">
-    <button onclick="document.getElementById('file-input').click()" style="padding: 0.5rem 1rem; background: var(--accent); border:none; cursor:pointer; font-weight:bold; border-radius:4px;">LOAD MISSION JSON</button>
+    <button onclick="document.getElementById('file-input').click()" style="padding: 0.8rem 1.5rem; background: #fff; color:#000; border:none; cursor:pointer; font-weight:800; border-radius:8px; font-family:'Syne'">UPLOAD LOG JSON</button>
   </div>
 </header>
 
 <div class="meta-grid" id="meta">
-  </div>
+  <div class="meta-card"><div class="label">Time</div><div class="value">--</div></div>
+  <div class="meta-card"><div class="label">Sites Deployed</div><div class="value">--</div></div>
+  <div class="meta-card"><div class="label">Token Usage</div><div class="value">--</div></div>
+  <div class="meta-card"><div class="label">Iterations</div><div class="value">--</div></div>
+</div>
 
 <div id="map-container">
   <svg id="missionMap" viewBox="0 0 620 230"></svg>
 </div>
 
-<div class="timeline" id="timeline">
-  </div>
+<div class="timeline-controls">
+  <span style="font-size: 0.8rem; color: var(--muted); font-weight: 700; text-transform: uppercase;">Filter View:</span>
+  <button class="toggle-btn active" onclick="filterSteps('all', this)">ALL STEPS</button>
+  <button class="toggle-btn" onclick="filterSteps('deployment', this)">DEPLOYMENT</button>
+  <button class="toggle-btn" onclick="filterSteps('navigation', this)">NAVIGATION</button>
+  <button class="toggle-btn" onclick="filterSteps('recovery', this)">RECOVERY</button>
+</div>
+
+<div class="timeline" id="timeline"></div>
 
 <script>
+  let currentFilter = 'all';
+
+  function escHtml(str) {
+    if (!str) return '';
+    return str.toString().replace(/&/g, "&amp;").replace(/</g, "&lt;").replace(/>/g, "&gt;");
+  }
+
+  function fnCategory(fn) {
+    if (['navigate_to_waypoint', 'turn_around', 'go_around_obstacle'].includes(fn)) return 'navigation';
+    if (['start_rope', 'stop_rope', 'pick_and_place', 'deploy_antenna'].includes(fn)) return 'deployment';
+    if (['abort_site', 'ignore_obstacle', 'request_operator_control'].includes(fn)) return 'recovery';
+    return 'all';
+  }
+
+  function fnIcon(fn) {
+    const icons = {
+      'navigate_to_waypoint': '📍',
+      'start_rope': '🧵',
+      'stop_rope': '🏁',
+      'pick_and_place': '📦',
+      'turn_around': '🔄',
+      'mission_complete': '🚀',
+      'abort_site': '⚠️',
+      'get_site_waypoints': '📋'
+    };
+    return icons[fn] || '⚙️';
+  }
+
   const fileInput = document.getElementById('file-input');
   
   fileInput.addEventListener('change', (e) => {
@@ -164,12 +289,12 @@
   function renderMeta(data) {
     const meta = document.getElementById('meta');
     const stats = data.mission_stats || {};
-    const totalSites = data.deployed_sites ? data.deployed_sites.length : 0;
+    const deployed = data.deployed_sites || [];
     
     meta.innerHTML = `
       <div class="meta-card"><div class="label">Duration</div><div class="value">${stats.duration_s || '?'}s</div></div>
-      <div class="meta-card"><div class="label">Sites Deployed</div><div class="value">${totalSites} / 16</div></div>
-      <div class="meta-card"><div class="label">Total Tokens</div><div class="value">${(stats.tokens?.total / 1000).toFixed(1)}k</div></div>
+      <div class="meta-card"><div class="label">Sites Deployed</div><div class="value">${deployed.length} / 16</div></div>
+      <div class="meta-card"><div class="label">Total Tokens</div><div class="value">${((stats.tokens?.total || 0) / 1000).toFixed(1)}k</div></div>
       <div class="meta-card"><div class="label">Iterations</div><div class="value">${stats.iterations || '?'}</div></div>
     `;
     document.getElementById('mission-id').innerText = data.timestamp || 'LOG';
@@ -179,35 +304,45 @@
     const svg = document.getElementById('missionMap');
     svg.innerHTML = '';
     
-    // Deployment Grid: 4 rows of 4 sites in S-pattern
-    const totalSitesExpected = 16;
-    const sites = data.deployed_sites || [];
+    const deployed = data.deployed_sites || [];
+    const aborted = data.aborted_sites || [];
     
-    for (let i = 1; i <= totalSitesExpected; i++) {
-      const isDeployed = sites.includes(i);
-      
-      // Calculate layout coordinates for 4x4 S-pattern
+    // Draw S-pattern connections (faint path)
+    let pathD = "";
+    for (let i = 1; i <= 16; i++) {
       const row = Math.floor((i - 1) / 4);
-      const pos = (i - 1) % 4;
-      const isEvenRow = row % 2 === 0;
-      
-      // Flip X coordinate for odd rows to create the "S"
-      const x = 60 + (isEvenRow ? pos * 120 : (3 - pos) * 120);
+      const col = (i - 1) % 4;
+      const isReverse = row % 2 !== 0;
+      const x = 60 + (isReverse ? (3 - col) * 120 : col * 120);
+      const y = 30 + (row * 50);
+      pathD += (i === 1 ? "M" : "L") + `${x},${y}`;
+    }
+    const path = document.createElementNS("http://www.w3.org/2000/svg", "path");
+    path.setAttribute("d", pathD);
+    path.setAttribute("class", "path-line");
+    svg.appendChild(path);
+    
+    for (let i = 1; i <= 16; i++) {
+      const row = Math.floor((i - 1) / 4);
+      const col = (i - 1) % 4;
+      const isReverse = row % 2 !== 0;
+      const x = 60 + (isReverse ? (3 - col) * 120 : col * 120);
       const y = 30 + (row * 50);
 
-      // Draw Site
+      const statusClass = deployed.includes(i) ? 'deployed' : (aborted.includes(i) ? 'aborted' : '');
+      
       const circle = document.createElementNS("http://www.w3.org/2000/svg", "circle");
       circle.setAttribute("cx", x);
       circle.setAttribute("cy", y);
-      circle.setAttribute("r", 15);
-      circle.setAttribute("class", `site-node ${isDeployed ? 'deployed' : ''}`);
+      circle.setAttribute("r", 14);
+      circle.setAttribute("class", `site-node ${statusClass}`);
       svg.appendChild(circle);
 
       const text = document.createElementNS("http://www.w3.org/2000/svg", "text");
       text.setAttribute("x", x);
       text.setAttribute("y", y + 4);
       text.setAttribute("text-anchor", "middle");
-      text.setAttribute("class", `site-label ${isDeployed ? 'deployed' : ''}`);
+      text.setAttribute("class", `site-label ${statusClass ? 'active' : ''}`);
       text.textContent = i;
       svg.appendChild(text);
     }
@@ -215,22 +350,36 @@
 
   function groupBySite(data) {
     const sites = {};
-    const messages = data.messages || [];
+    const messages = data.conversation || [];
     
-    messages.forEach(msg => {
+    messages.forEach((msg, idx) => {
       if (msg.role !== 'assistant' || !msg.tool_calls) return;
       
       msg.tool_calls.forEach(tc => {
         const fn = tc.function.name;
         const args = JSON.parse(tc.function.arguments);
         const reasoning = msg.content;
-
-        // Try to find the result in the next message
+        
         const resultMsg = messages.find(m => m.tool_call_id === tc.id);
         const result = resultMsg ? JSON.parse(resultMsg.content) : null;
 
-        if (['get_site_waypoints', 'deploy_antenna', 'stop_rope', 'validate_deployment'].includes(fn)) {
-          const siteId = args.site_id;
+        let siteId = args.site_id || args.next_site_id;
+        
+        // Contextual site ID if not in args
+        if (!siteId) {
+          if (fn === 'pick_and_place') {
+            // Find site ID in preceding get_site_waypoints or similar
+            for (let j = idx - 1; j >= 0; j--) {
+              const prev = messages[j];
+              if (prev.tool_calls) {
+                const call = prev.tool_calls.find(c => JSON.parse(c.function.arguments).site_id);
+                if (call) { siteId = JSON.parse(call.function.arguments).site_id; break; }
+              }
+            }
+          }
+        }
+
+        if (siteId) {
           if (!sites[siteId]) {
             sites[siteId] = {
               id: siteId,
@@ -263,32 +412,60 @@
       el.className = 'timeline-row';
       const headerHtml = `
         <div class="row-header">
-          <div class="row-label">Row ${rowIdx}</div>
-          <div class="row-stats">${siteList.length} sites</div>
+          <div class="row-label">ROW ${rowIdx}</div>
+          <div class="row-stats">${siteList.length} SITES PROCESSED</div>
         </div>
       `;
 
-      let sitesHtml = '<div style="display:grid; grid-template-columns: repeat(2, 1fr); gap: 2rem;">';
+      let stepsHtml = '<div class="site-grid">';
       siteList.forEach(site => {
-        sitesHtml += `<div class="site-group">
-          <div><span class="site-badge row${rowIdx}">SITE ${site.id}</span></div>
-          ${site.steps.map(step => `
-            <div class="step" onclick="this.classList.toggle('expanded')">
-              <div class="step-header">
-                <span class="fn-name">${step.fn}()</span>
-                <span style="color:${step.result?.success ? 'var(--success)' : 'var(--danger)'}">${step.result?.success ? 'OK' : 'FAIL'}</span>
-              </div>
-              <div class="step-reasoning">${step.reasoning}</div>
-              <div class="expand-hint">↕ details</div>
-              <div class="step-detail">ARGS: ${JSON.stringify(step.args, null, 2)}\n\nRESULT: ${JSON.stringify(step.result, null, 2)}</div>
-            </div>
-          `).join('')}
-        </div>`;
-      });
-      sitesHtml += '</div>';
+        stepsHtml += `<div class="site-group">
+          <div><span class="site-badge row${rowIdx}">SITE ${site.id}</span></div>`;
+        
+        site.steps.forEach(step => {
+          const ok = step.result?.success;
+          const cat = fnCategory(step.fn);
+          const visible = stepMatchesFilter(step) ? '' : 'hidden';
+          const extraClass = cat === 'navigation' ? 'navigation' : step.fn === 'mission_complete' ? 'complete' : '';
 
-      el.innerHTML = headerHtml + sitesHtml;
+          stepsHtml += `
+            <div class="step ${ok ? 'success' : 'error'} ${extraClass} ${visible}" data-cat="${cat}" onclick="this.classList.toggle('expanded')">
+              <div class="step-header">
+                <span class="fn-name">${fnIcon(step.fn)} ${step.fn}()</span>
+                <span class="step-status ${ok ? 'ok' : 'fail'}">${ok ? 'OK' : 'FAIL'}</span>
+              </div>
+              <div class="step-reasoning">${escHtml(step.reasoning)}</div>
+              <div class="expand-hint">↕ click to expand</div>
+              <div class="step-detail"><b>ARGS:</b>\n${escHtml(JSON.stringify(step.args, null, 2))}\n\n<b>RESULT:</b>\n${escHtml(JSON.stringify(step.result, null, 2))}</div>
+            </div>
+          `;
+        });
+        stepsHtml += '</div>';
+      });
+      stepsHtml += '</div>';
+
+      el.innerHTML = headerHtml + stepsHtml;
       timeline.appendChild(el);
+    });
+  }
+
+  function stepMatchesFilter(step) {
+    if (currentFilter === 'all') return true;
+    return fnCategory(step.fn) === currentFilter;
+  }
+
+  function filterSteps(filter, btn) {
+    currentFilter = filter;
+    document.querySelectorAll('.toggle-btn').forEach(b => b.classList.remove('active'));
+    btn.classList.add('active');
+    
+    document.querySelectorAll('.step').forEach(step => {
+      const cat = step.dataset.cat;
+      if (currentFilter === 'all' || cat === currentFilter) {
+        step.classList.remove('hidden');
+      } else {
+        step.classList.add('hidden');
+      }
     });
   }
 </script>
