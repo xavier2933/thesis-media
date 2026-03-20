@@ -31,775 +31,267 @@
     overflow-x: hidden;
   }
 
-  /* Subtle grid background */
-  body::before {
-    content: '';
-    position: fixed;
-    inset: 0;
-    background-image:
-      linear-gradient(var(--border) 1px, transparent 1px),
-      linear-gradient(90deg, var(--border) 1px, transparent 1px);
-    background-size: 48px 48px;
-    opacity: 0.35;
-    pointer-events: none;
-    z-index: 0;
-  }
-
-  .container {
-    max-width: 1100px;
-    margin: 0 auto;
-    padding: 40px 24px;
-    position: relative;
-    z-index: 1;
-  }
-
-  /* ── Header ── */
   header {
-    margin-bottom: 40px;
+    padding: 2rem;
     border-bottom: 1px solid var(--border);
-    padding-bottom: 28px;
-  }
-
-  .header-top {
     display: flex;
-    align-items: flex-start;
     justify-content: space-between;
-    gap: 16px;
-    flex-wrap: wrap;
-  }
-
-  .title-block h1 {
-    font-size: 2rem;
-    font-weight: 800;
-    letter-spacing: -0.5px;
-    color: #fff;
-    line-height: 1.1;
-  }
-
-  .title-block h1 span { color: var(--accent); }
-
-  .title-block .subtitle {
-    font-family: 'Space Mono', monospace;
-    font-size: 0.72rem;
-    color: var(--muted);
-    margin-top: 6px;
-    letter-spacing: 0.08em;
-    text-transform: uppercase;
-  }
-
-  .meta-pills {
-    display: flex;
-    gap: 8px;
-    flex-wrap: wrap;
-    margin-top: 20px;
-  }
-
-  .pill {
-    font-family: 'Space Mono', monospace;
-    font-size: 0.7rem;
-    padding: 4px 10px;
-    border-radius: 4px;
-    border: 1px solid var(--border);
-    background: var(--surface2);
-    color: var(--muted);
-    display: flex;
     align-items: center;
-    gap: 5px;
+    background: var(--surface);
   }
-  .pill .label { color: var(--text); font-weight: 700; }
-  .pill.success .label { color: var(--success); }
-  .pill.info .label { color: var(--accent); }
 
-  /* ── Stats Row ── */
-  .stats-row {
+  .meta-grid {
     display: grid;
-    grid-template-columns: repeat(auto-fit, minmax(140px, 1fr));
-    gap: 12px;
-    margin-bottom: 36px;
+    grid-template-columns: repeat(4, 1fr);
+    gap: 1.5rem;
+    padding: 2rem;
   }
 
-  .stat-card {
-    background: var(--surface);
+  .meta-card {
+    background: var(--surface2);
     border: 1px solid var(--border);
+    padding: 1rem;
     border-radius: 8px;
-    padding: 16px;
-    position: relative;
-    overflow: hidden;
   }
 
-  .stat-card::after {
-    content: '';
-    position: absolute;
-    top: 0; left: 0; right: 0;
-    height: 2px;
-    background: var(--accent);
+  .label { font-size: 0.75rem; color: var(--muted); text-transform: uppercase; margin-bottom: 0.5rem; }
+  .value { font-family: 'Space Mono', monospace; font-size: 1.25rem; color: var(--accent); }
+
+  #map-container {
+    padding: 0 2rem;
+    margin-bottom: 2rem;
   }
 
-  .stat-card.success::after { background: var(--success); }
-  .stat-card.warn::after { background: var(--warn); }
-  .stat-card.purple::after { background: var(--accent2); }
-
-  .stat-label {
-    font-family: 'Space Mono', monospace;
-    font-size: 0.62rem;
-    text-transform: uppercase;
-    letter-spacing: 0.1em;
-    color: var(--muted);
-    margin-bottom: 8px;
-  }
-
-  .stat-value {
-    font-size: 1.8rem;
-    font-weight: 800;
-    color: #fff;
-    line-height: 1;
-  }
-
-  .stat-card.success .stat-value { color: var(--success); }
-  .stat-card.warn .stat-value { color: var(--warn); }
-
-  /* ── S-pattern Map ── */
-  .section-label {
-    font-family: 'Space Mono', monospace;
-    font-size: 0.68rem;
-    text-transform: uppercase;
-    letter-spacing: 0.12em;
-    color: var(--muted);
-    margin-bottom: 12px;
-    display: flex;
-    align-items: center;
-    gap: 8px;
-  }
-
-  .section-label::after {
-    content: '';
-    flex: 1;
-    height: 1px;
-    background: var(--border);
-  }
-
-  .map-wrap {
+  svg {
+    width: 100%;
     background: var(--surface);
     border: 1px solid var(--border);
-    border-radius: 10px;
-    padding: 24px;
-    margin-bottom: 36px;
-    overflow-x: auto;
+    border-radius: 12px;
   }
 
-  svg.mission-map {
-    display: block;
-    min-width: 560px;
-    width: 100%;
-    height: auto;
+  .site-node { fill: var(--dim); stroke: var(--border); stroke-width: 2; }
+  .site-node.deployed { fill: var(--success); stroke: #fff; }
+  .site-label { font-size: 10px; fill: var(--muted); font-family: 'Space Mono', monospace; }
+  .site-label.deployed { fill: #fff; }
+
+  /* Timeline Styles */
+  .timeline { padding: 0 2rem 4rem; }
+  .timeline-row { margin-bottom: 3rem; }
+  .row-header { 
+    display: flex; 
+    align-items: center; 
+    gap: 1rem; 
+    margin-bottom: 1.5rem;
+    border-left: 4px solid var(--accent);
+    padding-left: 1rem;
   }
+  .row-label { font-weight: 800; font-size: 1.5rem; }
 
-  /* ── Timeline ── */
-  .timeline { position: relative; }
-
-  .step-group {
-    margin-bottom: 32px;
-    opacity: 0;
-    transform: translateY(14px);
-    animation: fadeUp 0.4s ease forwards;
-  }
-
-  @keyframes fadeUp {
-    to { opacity: 1; transform: translateY(0); }
-  }
-
-  .step-group-header {
-    display: flex;
-    align-items: center;
-    gap: 10px;
-    margin-bottom: 10px;
-  }
-
+  .site-group { display: flex; flex-direction: column; gap: 1rem; margin-bottom: 2rem; }
   .site-badge {
-    background: var(--accent2);
-    color: #fff;
-    font-family: 'Space Mono', monospace;
-    font-size: 0.7rem;
-    font-weight: 700;
-    padding: 3px 10px;
-    border-radius: 3px;
-    letter-spacing: 0.05em;
+    display: inline-block;
+    padding: 0.25rem 0.75rem;
+    border-radius: 4px;
+    font-size: 0.8rem;
+    font-weight: bold;
+    margin-bottom: 0.5rem;
   }
-
-  .site-badge.row0 { background: #0e4f8e; border: 1px solid #1a7cd4; color: #7dd3fa; }
-  .site-badge.row1 { background: #3b1f6e; border: 1px solid #7c3aed; color: #c4b5fd; }
-
-  .step-group-title {
-    font-size: 0.95rem;
-    font-weight: 600;
-    color: #fff;
-  }
-
-  .step-list {
-    border-left: 2px solid var(--border);
-    margin-left: 6px;
-    padding-left: 20px;
-    display: flex;
-    flex-direction: column;
-    gap: 8px;
-  }
+  .row0 { background: var(--accent); color: #000; }
+  .row1 { background: var(--accent2); color: #fff; }
+  .row2 { background: #3b82f6; color: #fff; }
+  .row3 { background: #ec4899; color: #fff; }
 
   .step {
-    background: var(--surface);
-    border: 1px solid var(--border);
-    border-radius: 7px;
-    padding: 12px 14px;
-    position: relative;
-    transition: border-color 0.15s;
-  }
-
-  .step::before {
-    content: '';
-    position: absolute;
-    left: -27px;
-    top: 50%;
-    transform: translateY(-50%);
-    width: 10px;
-    height: 10px;
-    border-radius: 50%;
-    background: var(--dim);
-    border: 2px solid var(--border);
-  }
-
-  .step.success::before { background: var(--success); border-color: var(--success); }
-  .step.error::before { background: var(--danger); border-color: var(--danger); }
-
-  .step:hover {
-    border-color: var(--accent);
-    cursor: pointer;
-  }
-
-  .step-header {
-    display: flex;
-    align-items: center;
-    gap: 8px;
-    margin-bottom: 4px;
-  }
-
-  .fn-name {
-    font-family: 'Space Mono', monospace;
-    font-size: 0.78rem;
-    color: var(--accent);
-    font-weight: 700;
-  }
-
-  .step-status {
-    font-family: 'Space Mono', monospace;
-    font-size: 0.62rem;
-    padding: 2px 7px;
-    border-radius: 3px;
-    margin-left: auto;
-  }
-
-  .step-status.ok { background: rgba(34,211,160,0.12); color: var(--success); border: 1px solid rgba(34,211,160,0.25); }
-  .step-status.fail { background: rgba(239,68,68,0.12); color: var(--danger); border: 1px solid rgba(239,68,68,0.25); }
-
-  .step-reasoning {
-    font-size: 0.82rem;
-    color: var(--muted);
-    line-height: 1.5;
-    margin-bottom: 6px;
-  }
-
-  .step-detail {
-    font-family: 'Space Mono', monospace;
-    font-size: 0.7rem;
-    color: #5a7090;
-    display: none;
-    margin-top: 8px;
-    padding-top: 8px;
-    border-top: 1px solid var(--dim);
-    white-space: pre-wrap;
-    word-break: break-all;
-  }
-
-  .step.expanded .step-detail { display: block; }
-  .step.expanded { border-color: var(--accent); }
-
-  .expand-hint {
-    font-family: 'Space Mono', monospace;
-    font-size: 0.6rem;
-    color: var(--dim);
-    text-align: right;
-    margin-top: 2px;
-  }
-
-  /* Special steps */
-  .step.transition {
-    background: rgba(124,58,237,0.07);
-    border-color: rgba(124,58,237,0.3);
-  }
-
-  .step.transition::before { background: var(--accent2); border-color: var(--accent2); }
-  .step.transition .fn-name { color: var(--accent2); }
-
-  .step.complete {
-    background: rgba(0,229,255,0.04);
-    border-color: rgba(0,229,255,0.2);
-  }
-  .step.complete .fn-name { color: var(--accent); }
-
-  /* ── Upload zone ── */
-  .upload-zone {
-    border: 2px dashed var(--border);
-    border-radius: 12px;
-    padding: 48px 24px;
-    text-align: center;
-    cursor: pointer;
-    transition: border-color 0.2s, background 0.2s;
-    margin-bottom: 36px;
-  }
-
-  .upload-zone:hover, .upload-zone.drag { border-color: var(--accent); background: rgba(0,229,255,0.03); }
-
-  .upload-zone p { color: var(--muted); font-size: 0.9rem; margin-top: 10px; }
-  .upload-zone .upload-icon { font-size: 2.5rem; opacity: 0.4; }
-  .upload-zone .upload-btn {
-    display: inline-block;
-    margin-top: 14px;
-    padding: 8px 20px;
     background: var(--surface2);
     border: 1px solid var(--border);
-    border-radius: 5px;
-    font-size: 0.8rem;
-    font-family: 'Space Mono', monospace;
-    color: var(--accent);
+    border-radius: 6px;
+    padding: 0.75rem;
+    margin-bottom: 0.5rem;
     cursor: pointer;
-    transition: background 0.15s;
-  }
-  .upload-zone .upload-btn:hover { background: var(--dim); }
-
-  #fileInput { display: none; }
-
-  .error-msg {
-    color: var(--danger);
-    font-family: 'Space Mono', monospace;
-    font-size: 0.75rem;
-    padding: 10px;
-    background: rgba(239,68,68,0.07);
-    border: 1px solid rgba(239,68,68,0.2);
-    border-radius: 5px;
-    margin-bottom: 16px;
+    transition: all 0.2s;
   }
 
-  .toggle-bar {
-    display: flex;
-    gap: 8px;
-    margin-bottom: 16px;
-  }
+  .step:hover { border-color: var(--accent); }
+  .step-header { display: flex; justify-content: space-between; font-family: 'Space Mono', monospace; font-size: 0.9rem; }
+  .fn-name { color: var(--accent); font-weight: bold; }
+  .step-reasoning { font-size: 0.85rem; color: var(--muted); margin-top: 0.5rem; line-height: 1.4; }
+  
+  .step-detail { display: none; margin-top: 1rem; padding-top: 1rem; border-top: 1px solid var(--border); font-family: 'Space Mono', monospace; font-size: 0.8rem; white-space: pre-wrap; color: #aaa; }
+  .step.expanded .step-detail { display: block; }
 
-  .toggle-btn {
-    font-family: 'Space Mono', monospace;
-    font-size: 0.65rem;
-    padding: 5px 12px;
-    background: var(--surface);
-    border: 1px solid var(--border);
-    border-radius: 4px;
-    color: var(--muted);
-    cursor: pointer;
-    transition: all 0.15s;
-  }
-
-  .toggle-btn:hover { border-color: var(--accent); color: var(--accent); }
-  .toggle-btn.active { background: rgba(0,229,255,0.08); border-color: var(--accent); color: var(--accent); }
+  .expand-hint { font-size: 0.7rem; color: var(--dim); text-align: center; margin-top: 5px; }
 </style>
 </head>
 <body>
-<div class="container">
 
-  <header>
-    <div class="header-top">
-      <div class="title-block">
-        <h1>Mission <span>Log</span> Viewer</h1>
-        <div class="subtitle">LLM Autonomous Task Planner · Visual Debugger</div>
-      </div>
-    </div>
-    <div class="meta-pills" id="metaPills"></div>
-  </header>
-
-  <div class="upload-zone" id="uploadZone">
-    <div class="upload-icon">📡</div>
-    <p>Drop a mission log JSON file here, or click to browse</p>
-    <p style="font-size:0.75rem; margin-top:4px; color: var(--dim)">The page is pre-loaded with a sample log — upload your own to replace it</p>
-    <label class="upload-btn" for="fileInput">Choose File</label>
-    <input type="file" id="fileInput" accept=".json">
+<header>
+  <h1>LLM MISSION LOG <span id="mission-id" style="color:var(--accent)">-</span></h1>
+  <div id="controls">
+    <input type="file" id="file-input" style="display:none">
+    <button onclick="document.getElementById('file-input').click()" style="padding: 0.5rem 1rem; background: var(--accent); border:none; cursor:pointer; font-weight:bold; border-radius:4px;">LOAD MISSION JSON</button>
   </div>
-  <div id="errorMsg" class="error-msg" style="display:none"></div>
+</header>
 
-  <div id="statsRow" class="stats-row"></div>
-
-  <div class="section-label" id="mapLabel" style="display:none">Mission Map</div>
-  <div class="map-wrap" id="mapWrap" style="display:none">
-    <svg class="mission-map" id="missionMap" viewBox="0 0 620 130" xmlns="http://www.w3.org/2000/svg"></svg>
+<div class="meta-grid" id="meta">
   </div>
 
-  <div class="section-label" id="timelineLabel" style="display:none">
-    Execution Timeline
-    <span style="color: var(--text); font-size:0.75rem; font-family: 'Syne', sans-serif; text-transform:none; letter-spacing:0; margin-left:4px">(click any step to expand)</span>
-  </div>
-  <div class="toggle-bar" id="toggleBar" style="display:none">
-    <button class="toggle-btn active" onclick="filterSteps('all', this)">All Steps</button>
-    <button class="toggle-btn" onclick="filterSteps('nav', this)">Navigation</button>
-    <button class="toggle-btn" onclick="filterSteps('rope', this)">Rope Ops</button>
-    <button class="toggle-btn" onclick="filterSteps('other', this)">Planning</button>
-  </div>
-  <div class="timeline" id="timeline"></div>
-
+<div id="map-container">
+  <svg id="missionMap" viewBox="0 0 620 230"></svg>
 </div>
 
+<div class="timeline" id="timeline">
+  </div>
+
 <script>
-// ── Embedded sample log ──
-const SAMPLE = {"timestamp":"20260222_190037","model":"gpt-5-nano","deployed_sites":[1,2,3,4,5,6,7,8],"aborted_sites":[],"obstacles":[],"system_prompt":"(system prompt omitted for brevity)","conversation":[{"role":"user","content":"Begin the antenna deployment mission. Deploy all 8 sites across 2 rows in S-pattern order."},{"role":"assistant","content":"Fetching adjusted waypoints for Site 1 to ensure correct starting position.","tool_calls":[{"id":"t1","type":"function","function":{"name":"get_adjusted_site_waypoints","arguments":"{\"site_id\": 1}"}}]},{"role":"tool","tool_call_id":"t1","content":"{\"success\": true, \"adjusted\": false, \"waypoints\": {\"rope_start\": [405.0, 18.0, 255.0], \"preamp\": [410.0, 18.0, 255.0], \"rope_end\": [415.0, 18.0, 255.0]}, \"message\": \"Using original waypoints for site 1\"}"},{"role":"assistant","content":"Driving to rope_start for Site 1 at [405.0, 18.0, 255.0].","tool_calls":[{"id":"t2","type":"function","function":{"name":"navigate_to_waypoint","arguments":"{\"x\":405.0,\"y\":18.0,\"z\":255.0}"}}]},{"role":"tool","tool_call_id":"t2","content":"{\"success\": true, \"message\": \"Arrived at (405.0, 18.0, 255.0)\", \"rover_position\": [404.625, 19.867, 254.857]}"},{"role":"assistant","content":"Beginning rope deployment for Site 1.","tool_calls":[{"id":"t3","type":"function","function":{"name":"start_rope","arguments":"{}"}}]},{"role":"tool","tool_call_id":"t3","content":"{\"success\": true, \"message\": \"Rope deployment started\", \"rope_deploying\": true}"},{"role":"assistant","content":"Proceeding to preamp for Site 1.","tool_calls":[{"id":"t4","type":"function","function":{"name":"navigate_to_waypoint","arguments":"{\"x\":410.0,\"y\":18.0,\"z\":255.0}"}}]},{"role":"tool","tool_call_id":"t4","content":"{\"success\": true, \"message\": \"Arrived at (410.0, 18.0, 255.0)\", \"rover_position\": [409.625, 19.867, 254.895]}"},{"role":"assistant","content":"Placing antenna at Site 1 preamp.","tool_calls":[{"id":"t5","type":"function","function":{"name":"pick_and_place","arguments":"{}"}}]},{"role":"tool","tool_call_id":"t5","content":"{\"success\": true, \"message\": \"Antenna placed successfully\"}"},{"role":"assistant","content":"Driving to rope_end for Site 1.","tool_calls":[{"id":"t6","type":"function","function":{"name":"navigate_to_waypoint","arguments":"{\"x\":415.0,\"y\":18.0,\"z\":255.0}"}}]},{"role":"tool","tool_call_id":"t6","content":"{\"success\": true, \"message\": \"Arrived at (415.0, 18.0, 255.0)\", \"rover_position\": [414.614, 19.867, 254.926]}"},{"role":"assistant","content":"Stopping rope and finalizing Site 1.","tool_calls":[{"id":"t7","type":"function","function":{"name":"stop_rope","arguments":"{\"site_id\":1}"}}]},{"role":"tool","tool_call_id":"t7","content":"{\"success\": true, \"message\": \"Site 1 finalized.\", \"deployed_sites\": [1]}"},{"role":"assistant","content":"Fetching waypoints for Site 2.","tool_calls":[{"id":"t8","type":"function","function":{"name":"get_adjusted_site_waypoints","arguments":"{\"site_id\":2}"}}]},{"role":"tool","tool_call_id":"t8","content":"{\"success\": true, \"adjusted\": false, \"waypoints\": {\"rope_start\": [420.0, 18.0, 255.0], \"preamp\": [425.0, 18.0, 255.0], \"rope_end\": [430.0, 18.0, 255.0]}, \"message\": \"Using original waypoints for site 2\"}"},{"role":"assistant","content":"Navigating to Site 2 rope_start.","tool_calls":[{"id":"t9","type":"function","function":{"name":"navigate_to_waypoint","arguments":"{\"x\":420.0,\"y\":18.0,\"z\":255.0}"}}]},{"role":"tool","tool_call_id":"t9","content":"{\"success\": true, \"message\": \"Arrived at (420.0, 18.0, 255.0)\"}"},{"role":"assistant","content":"Starting rope for Site 2.","tool_calls":[{"id":"t10","type":"function","function":{"name":"start_rope","arguments":"{}"}}]},{"role":"tool","tool_call_id":"t10","content":"{\"success\": true, \"rope_deploying\": true}"},{"role":"assistant","content":"Navigating to Site 2 preamp.","tool_calls":[{"id":"t11","type":"function","function":{"name":"navigate_to_waypoint","arguments":"{\"x\":425.0,\"y\":18.0,\"z\":255.0}"}}]},{"role":"tool","tool_call_id":"t11","content":"{\"success\": true, \"message\": \"Arrived at (425.0, 18.0, 255.0)\"}"},{"role":"assistant","content":"Placing antenna at Site 2.","tool_calls":[{"id":"t12","type":"function","function":{"name":"pick_and_place","arguments":"{}"}}]},{"role":"tool","tool_call_id":"t12","content":"{\"success\": true, \"message\": \"Antenna placed successfully\"}"},{"role":"assistant","content":"Navigating to Site 2 rope_end.","tool_calls":[{"id":"t13","type":"function","function":{"name":"navigate_to_waypoint","arguments":"{\"x\":430.0,\"y\":18.0,\"z\":255.0}"}}]},{"role":"tool","tool_call_id":"t13","content":"{\"success\": true, \"message\": \"Arrived at (430.0, 18.0, 255.0)\"}"},{"role":"assistant","content":"Finalizing Site 2.","tool_calls":[{"id":"t14","type":"function","function":{"name":"stop_rope","arguments":"{\"site_id\":2}"}}]},{"role":"tool","tool_call_id":"t14","content":"{\"success\": true, \"message\": \"Site 2 finalized.\", \"deployed_sites\": [1,2]}"},{"role":"assistant","content":"Attempting turn_around early (before sites 3,4) — this will fail.","tool_calls":[{"id":"t15","type":"function","function":{"name":"turn_around","arguments":"{}"}}]},{"role":"tool","tool_call_id":"t15","content":"{\"success\": false, \"error\": \"Cannot turn around yet — sites [3, 4] in Row 0 are not deployed or aborted.\", \"remaining_sites\": [3, 4]}"},{"role":"assistant","content":"Fetching waypoints for Site 3.","tool_calls":[{"id":"t16","type":"function","function":{"name":"get_adjusted_site_waypoints","arguments":"{\"site_id\":3}"}}]},{"role":"tool","tool_call_id":"t16","content":"{\"success\": true, \"waypoints\": {\"rope_start\": [435.0, 18.0, 255.0], \"preamp\": [440.0, 18.0, 255.0], \"rope_end\": [445.0, 18.0, 255.0]}}"},{"role":"assistant","content":"Navigating to Site 3 rope_start.","tool_calls":[{"id":"t17","type":"function","function":{"name":"navigate_to_waypoint","arguments":"{\"x\":435.0,\"y\":18.0,\"z\":255.0}"}}]},{"role":"tool","tool_call_id":"t17","content":"{\"success\": true}"},{"role":"assistant","content":"Starting rope for Site 3.","tool_calls":[{"id":"t18","type":"function","function":{"name":"start_rope","arguments":"{}"}}]},{"role":"tool","tool_call_id":"t18","content":"{\"success\": true, \"rope_deploying\": true}"},{"role":"assistant","content":"Navigating to Site 3 preamp.","tool_calls":[{"id":"t19","type":"function","function":{"name":"navigate_to_waypoint","arguments":"{\"x\":440.0,\"y\":18.0,\"z\":255.0}"}}]},{"role":"tool","tool_call_id":"t19","content":"{\"success\": true}"},{"role":"assistant","content":"Placing antenna at Site 3.","tool_calls":[{"id":"t20","type":"function","function":{"name":"pick_and_place","arguments":"{}"}}]},{"role":"tool","tool_call_id":"t20","content":"{\"success\": true}"},{"role":"assistant","content":"Navigating to Site 3 rope_end.","tool_calls":[{"id":"t21","type":"function","function":{"name":"navigate_to_waypoint","arguments":"{\"x\":445.0,\"y\":18.0,\"z\":255.0}"}}]},{"role":"tool","tool_call_id":"t21","content":"{\"success\": true}"},{"role":"assistant","content":"Finalizing Site 3.","tool_calls":[{"id":"t22","type":"function","function":{"name":"stop_rope","arguments":"{\"site_id\":3}"}}]},{"role":"tool","tool_call_id":"t22","content":"{\"success\": true, \"deployed_sites\": [1,2,3]}"},{"role":"assistant","content":"Fetching waypoints for Site 4.","tool_calls":[{"id":"t23","type":"function","function":{"name":"get_adjusted_site_waypoints","arguments":"{\"site_id\":4}"}}]},{"role":"tool","tool_call_id":"t23","content":"{\"success\": true, \"waypoints\": {\"rope_start\": [450.0, 18.0, 255.0], \"preamp\": [455.0, 18.0, 255.0], \"rope_end\": [460.0, 18.0, 255.0]}}"},{"role":"assistant","content":"Navigating to Site 4 rope_start.","tool_calls":[{"id":"t24","type":"function","function":{"name":"navigate_to_waypoint","arguments":"{\"x\":450.0,\"y\":18.0,\"z\":255.0}"}}]},{"role":"tool","tool_call_id":"t24","content":"{\"success\": true}"},{"role":"assistant","content":"Starting rope for Site 4.","tool_calls":[{"id":"t25","type":"function","function":{"name":"start_rope","arguments":"{}"}}]},{"role":"tool","tool_call_id":"t25","content":"{\"success\": true, \"rope_deploying\": true}"},{"role":"assistant","content":"Navigating to Site 4 preamp.","tool_calls":[{"id":"t26","type":"function","function":{"name":"navigate_to_waypoint","arguments":"{\"x\":455.0,\"y\":18.0,\"z\":255.0}"}}]},{"role":"tool","tool_call_id":"t26","content":"{\"success\": true}"},{"role":"assistant","content":"Placing antenna at Site 4.","tool_calls":[{"id":"t27","type":"function","function":{"name":"pick_and_place","arguments":"{}"}}]},{"role":"tool","tool_call_id":"t27","content":"{\"success\": true}"},{"role":"assistant","content":"Navigating to Site 4 rope_end.","tool_calls":[{"id":"t28","type":"function","function":{"name":"navigate_to_waypoint","arguments":"{\"x\":460.0,\"y\":18.0,\"z\":255.0}"}}]},{"role":"tool","tool_call_id":"t28","content":"{\"success\": true}"},{"role":"assistant","content":"Finalizing Site 4.","tool_calls":[{"id":"t29","type":"function","function":{"name":"stop_rope","arguments":"{\"site_id\":4}"}}]},{"role":"tool","tool_call_id":"t29","content":"{\"success\": true, \"deployed_sites\": [1,2,3,4]}"},{"role":"assistant","content":"Row 0 complete. Performing turn_around to Row 1.","tool_calls":[{"id":"t30","type":"function","function":{"name":"turn_around","arguments":"{}"}}]},{"role":"tool","tool_call_id":"t30","content":"{\"success\": true, \"message\": \"U-turn complete. Now on Row 1, traveling -X.\", \"current_row\": 1}"},{"role":"assistant","content":"Fetching waypoints for Site 5.","tool_calls":[{"id":"t31","type":"function","function":{"name":"get_adjusted_site_waypoints","arguments":"{\"site_id\":5}"}}]},{"role":"tool","tool_call_id":"t31","content":"{\"success\": true, \"waypoints\": {\"rope_start\": [460.0, 18.0, 270.0], \"preamp\": [455.0, 18.0, 270.0], \"rope_end\": [450.0, 18.0, 270.0]}}"},{"role":"assistant","content":"Navigating to Site 5 rope_start.","tool_calls":[{"id":"t32","type":"function","function":{"name":"navigate_to_waypoint","arguments":"{\"x\":460.0,\"y\":18.0,\"z\":270.0}"}}]},{"role":"tool","tool_call_id":"t32","content":"{\"success\": true}"},{"role":"assistant","content":"Starting rope for Site 5.","tool_calls":[{"id":"t33","type":"function","function":{"name":"start_rope","arguments":"{}"}}]},{"role":"tool","tool_call_id":"t33","content":"{\"success\": true, \"rope_deploying\": true}"},{"role":"assistant","content":"Navigating to Site 5 preamp.","tool_calls":[{"id":"t34","type":"function","function":{"name":"navigate_to_waypoint","arguments":"{\"x\":455.0,\"y\":18.0,\"z\":270.0}"}}]},{"role":"tool","tool_call_id":"t34","content":"{\"success\": true}"},{"role":"assistant","content":"Placing antenna at Site 5.","tool_calls":[{"id":"t35","type":"function","function":{"name":"pick_and_place","arguments":"{}"}}]},{"role":"tool","tool_call_id":"t35","content":"{\"success\": true}"},{"role":"assistant","content":"Navigating to Site 5 rope_end.","tool_calls":[{"id":"t36","type":"function","function":{"name":"navigate_to_waypoint","arguments":"{\"x\":450.0,\"y\":18.0,\"z\":270.0}"}}]},{"role":"tool","tool_call_id":"t36","content":"{\"success\": true}"},{"role":"assistant","content":"Finalizing Site 5.","tool_calls":[{"id":"t37","type":"function","function":{"name":"stop_rope","arguments":"{\"site_id\":5}"}}]},{"role":"tool","tool_call_id":"t37","content":"{\"success\": true, \"deployed_sites\": [1,2,3,4,5]}"},{"role":"assistant","content":"Fetching waypoints for Site 6.","tool_calls":[{"id":"t38","type":"function","function":{"name":"get_adjusted_site_waypoints","arguments":"{\"site_id\":6}"}}]},{"role":"tool","tool_call_id":"t38","content":"{\"success\": true, \"waypoints\": {\"rope_start\": [445.0, 18.0, 270.0], \"preamp\": [440.0, 18.0, 270.0], \"rope_end\": [435.0, 18.0, 270.0]}}"},{"role":"assistant","content":"Navigating to Site 6 rope_start.","tool_calls":[{"id":"t39","type":"function","function":{"name":"navigate_to_waypoint","arguments":"{\"x\":445.0,\"y\":18.0,\"z\":270.0}"}}]},{"role":"tool","tool_call_id":"t39","content":"{\"success\": true}"},{"role":"assistant","content":"Starting rope for Site 6.","tool_calls":[{"id":"t40","type":"function","function":{"name":"start_rope","arguments":"{}"}}]},{"role":"tool","tool_call_id":"t40","content":"{\"success\": true, \"rope_deploying\": true}"},{"role":"assistant","content":"Navigating to Site 6 preamp.","tool_calls":[{"id":"t41","type":"function","function":{"name":"navigate_to_waypoint","arguments":"{\"x\":440.0,\"y\":18.0,\"z\":270.0}"}}]},{"role":"tool","tool_call_id":"t41","content":"{\"success\": true}"},{"role":"assistant","content":"Placing antenna at Site 6.","tool_calls":[{"id":"t42","type":"function","function":{"name":"pick_and_place","arguments":"{}"}}]},{"role":"tool","tool_call_id":"t42","content":"{\"success\": true}"},{"role":"assistant","content":"Navigating to Site 6 rope_end.","tool_calls":[{"id":"t43","type":"function","function":{"name":"navigate_to_waypoint","arguments":"{\"x\":435.0,\"y\":18.0,\"z\":270.0}"}}]},{"role":"tool","tool_call_id":"t43","content":"{\"success\": true}"},{"role":"assistant","content":"Finalizing Site 6.","tool_calls":[{"id":"t44","type":"function","function":{"name":"stop_rope","arguments":"{\"site_id\":6}"}}]},{"role":"tool","tool_call_id":"t44","content":"{\"success\": true, \"deployed_sites\": [1,2,3,4,5,6]}"},{"role":"assistant","content":"Fetching waypoints for Site 7.","tool_calls":[{"id":"t45","type":"function","function":{"name":"get_adjusted_site_waypoints","arguments":"{\"site_id\":7}"}}]},{"role":"tool","tool_call_id":"t45","content":"{\"success\": true, \"waypoints\": {\"rope_start\": [430.0, 18.0, 270.0], \"preamp\": [425.0, 18.0, 270.0], \"rope_end\": [420.0, 18.0, 270.0]}}"},{"role":"assistant","content":"Navigating to Site 7 rope_start.","tool_calls":[{"id":"t46","type":"function","function":{"name":"navigate_to_waypoint","arguments":"{\"x\":430.0,\"y\":18.0,\"z\":270.0}"}}]},{"role":"tool","tool_call_id":"t46","content":"{\"success\": true}"},{"role":"assistant","content":"Starting rope for Site 7.","tool_calls":[{"id":"t47","type":"function","function":{"name":"start_rope","arguments":"{}"}}]},{"role":"tool","tool_call_id":"t47","content":"{\"success\": true, \"rope_deploying\": true}"},{"role":"assistant","content":"Navigating to Site 7 preamp.","tool_calls":[{"id":"t48","type":"function","function":{"name":"navigate_to_waypoint","arguments":"{\"x\":425.0,\"y\":18.0,\"z\":270.0}"}}]},{"role":"tool","tool_call_id":"t48","content":"{\"success\": true}"},{"role":"assistant","content":"Placing antenna at Site 7.","tool_calls":[{"id":"t49","type":"function","function":{"name":"pick_and_place","arguments":"{}"}}]},{"role":"tool","tool_call_id":"t49","content":"{\"success\": true}"},{"role":"assistant","content":"Navigating to Site 7 rope_end.","tool_calls":[{"id":"t50","type":"function","function":{"name":"navigate_to_waypoint","arguments":"{\"x\":420.0,\"y\":18.0,\"z\":270.0}"}}]},{"role":"tool","tool_call_id":"t50","content":"{\"success\": true}"},{"role":"assistant","content":"Finalizing Site 7.","tool_calls":[{"id":"t51","type":"function","function":{"name":"stop_rope","arguments":"{\"site_id\":7}"}}]},{"role":"tool","tool_call_id":"t51","content":"{\"success\": true, \"deployed_sites\": [1,2,3,4,5,6,7]}"},{"role":"assistant","content":"Fetching waypoints for Site 8.","tool_calls":[{"id":"t52","type":"function","function":{"name":"get_adjusted_site_waypoints","arguments":"{\"site_id\":8}"}}]},{"role":"tool","tool_call_id":"t52","content":"{\"success\": true, \"waypoints\": {\"rope_start\": [415.0, 18.0, 270.0], \"preamp\": [410.0, 18.0, 270.0], \"rope_end\": [405.0, 18.0, 270.0]}}"},{"role":"assistant","content":"Navigating to Site 8 rope_start.","tool_calls":[{"id":"t53","type":"function","function":{"name":"navigate_to_waypoint","arguments":"{\"x\":415.0,\"y\":18.0,\"z\":270.0}"}}]},{"role":"tool","tool_call_id":"t53","content":"{\"success\": true}"},{"role":"assistant","content":"Starting rope for Site 8.","tool_calls":[{"id":"t54","type":"function","function":{"name":"start_rope","arguments":"{}"}}]},{"role":"tool","tool_call_id":"t54","content":"{\"success\": true, \"rope_deploying\": true}"},{"role":"assistant","content":"Navigating to Site 8 preamp.","tool_calls":[{"id":"t55","type":"function","function":{"name":"navigate_to_waypoint","arguments":"{\"x\":410.0,\"y\":18.0,\"z\":270.0}"}}]},{"role":"tool","tool_call_id":"t55","content":"{\"success\": true}"},{"role":"assistant","content":"Placing antenna at Site 8.","tool_calls":[{"id":"t56","type":"function","function":{"name":"pick_and_place","arguments":"{}"}}]},{"role":"tool","tool_call_id":"t56","content":"{\"success\": true}"},{"role":"assistant","content":"Navigating to Site 8 rope_end.","tool_calls":[{"id":"t57","type":"function","function":{"name":"navigate_to_waypoint","arguments":"{\"x\":405.0,\"y\":18.0,\"z\":270.0}"}}]},{"role":"tool","tool_call_id":"t57","content":"{\"success\": true}"},{"role":"assistant","content":"Finalizing Site 8.","tool_calls":[{"id":"t58","type":"function","function":{"name":"stop_rope","arguments":"{\"site_id\":8}"}}]},{"role":"tool","tool_call_id":"t58","content":"{\"success\": true, \"deployed_sites\": [1,2,3,4,5,6,7,8]}"},{"role":"assistant","content":"All 8 sites deployed. Calling mission_complete.","tool_calls":[{"id":"t59","type":"function","function":{"name":"mission_complete","arguments":"{\"summary\":\"All 8 antennas deployed across 2 rows in S-pattern.\"}"}}]},{"role":"tool","tool_call_id":"t59","content":"{\"success\": true, \"message\": \"Mission marked as complete\", \"final_deployed_sites\": [1,2,3,4,5,6,7,8]}"}]};
-
-// ── State ──
-let currentFilter = 'all';
-let renderedGroups = [];
-
-// ── Upload ──
-const uploadZone = document.getElementById('uploadZone');
-const fileInput = document.getElementById('fileInput');
-
-uploadZone.addEventListener('dragover', e => { e.preventDefault(); uploadZone.classList.add('drag'); });
-uploadZone.addEventListener('dragleave', () => uploadZone.classList.remove('drag'));
-uploadZone.addEventListener('drop', e => {
-  e.preventDefault(); uploadZone.classList.remove('drag');
-  const file = e.dataTransfer.files[0];
-  if (file) readFile(file);
-});
-fileInput.addEventListener('change', () => { if (fileInput.files[0]) readFile(fileInput.files[0]); });
-
-function readFile(file) {
-  const reader = new FileReader();
-  reader.onload = e => {
-    try {
-      const data = JSON.parse(e.target.result);
-      showError('');
-      renderLog(data);
-    } catch(err) {
-      showError('Could not parse JSON: ' + err.message);
-    }
-  };
-  reader.readAsText(file);
-}
-
-function showError(msg) {
-  const el = document.getElementById('errorMsg');
-  el.textContent = msg;
-  el.style.display = msg ? 'block' : 'none';
-}
-
-// ── Parse conversation into structured steps ──
-function parseConversation(conv) {
-  // Build a map of tool_call_id -> tool result
-  const toolResults = {};
-  conv.forEach(msg => {
-    if (msg.role === 'tool' && msg.tool_call_id) {
-      try { toolResults[msg.tool_call_id] = JSON.parse(msg.content); }
-      catch { toolResults[msg.tool_call_id] = { raw: msg.content }; }
-    }
+  const fileInput = document.getElementById('file-input');
+  
+  fileInput.addEventListener('change', (e) => {
+    const file = e.target.files[0];
+    const reader = new FileReader();
+    reader.onload = (event) => {
+      const data = JSON.parse(event.target.result);
+      renderAll(data);
+    };
+    reader.readAsText(file);
   });
 
-  const steps = [];
-  conv.forEach(msg => {
-    if (msg.role === 'assistant' && msg.tool_calls) {
-      msg.tool_calls.forEach(tc => {
-        const fn = tc.function.name;
-        let args = {};
-        try { args = JSON.parse(tc.function.arguments); } catch {}
-        const result = toolResults[tc.id] || {};
-        steps.push({
-          fn,
-          args,
-          result,
-          reasoning: msg.content || '',
-          success: result.success !== false,
-          id: tc.id
-        });
-      });
-    }
-  });
-  return steps;
-}
-
-// ── Group steps by site ──
-function groupBySite(steps) {
-  const groups = [];
-  let currentGroup = null;
-  let globalIdx = 0;
-
-  steps.forEach((step, i) => {
-    const fn = step.fn;
-    const siteId = step.args?.site_id || extractSiteFromResult(step.result);
-
-    if (fn === 'get_adjusted_site_waypoints' && siteId) {
-      currentGroup = {
-        site: siteId,
-        row: siteId <= 4 ? 0 : 1,
-        label: `Site ${siteId}`,
-        steps: [],
-        globalStart: globalIdx
-      };
-      groups.push(currentGroup);
-    } else if (fn === 'turn_around') {
-      currentGroup = { site: null, row: null, label: 'Row Transition', steps: [], globalStart: globalIdx, isTransition: true };
-      groups.push(currentGroup);
-    } else if (fn === 'mission_complete') {
-      currentGroup = { site: null, row: null, label: 'Mission Complete', steps: [], globalStart: globalIdx, isComplete: true };
-      groups.push(currentGroup);
-    }
-
-    if (!currentGroup) {
-      currentGroup = { site: null, row: null, label: 'Pre-Mission', steps: [], globalStart: 0, isPre: true };
-      groups.push(currentGroup);
-    }
-
-    currentGroup.steps.push({ ...step, globalIdx });
-    globalIdx++;
-  });
-
-  return groups;
-}
-
-function extractSiteFromResult(result) {
-  if (result?.deployed_sites?.length) return result.deployed_sites[result.deployed_sites.length - 1];
-  return null;
-}
-
-// ── Render ──
-function renderLog(data) {
-  renderMeta(data);
-  renderStats(data);
-  renderMap(data);
-  const steps = parseConversation(data.conversation || []);
-  renderedGroups = groupBySite(steps);
-  renderTimeline();
-  document.getElementById('mapLabel').style.display = '';
-  document.getElementById('mapWrap').style.display = '';
-  document.getElementById('timelineLabel').style.display = '';
-  document.getElementById('toggleBar').style.display = '';
-}
-
-function renderMeta(data) {
-  const pills = document.getElementById('metaPills');
-  const ts = data.timestamp || '';
-  const friendly = ts ? ts.replace(/(\d{4})(\d{2})(\d{2})_(\d{2})(\d{2})(\d{2})/, '$1-$2-$3 $4:$5:$6') : 'Unknown';
-  pills.innerHTML = `
-    <div class="pill info"><span>MODEL</span><span class="label">${data.model || 'unknown'}</span></div>
-    <div class="pill"><span>TIMESTAMP</span><span class="label">${friendly}</span></div>
-    <div class="pill success"><span>DEPLOYED</span><span class="label">${(data.deployed_sites||[]).length} / ${[...new Set([...(data.deployed_sites||[]),(data.aborted_sites||[])])].length || 8} sites</span></div>
-    <div class="pill"><span>ABORTED</span><span class="label">${(data.aborted_sites||[]).length}</span></div>
-    <div class="pill"><span>OBSTACLES</span><span class="label">${(data.obstacles||[]).length}</span></div>
-  `;
-}
-
-function renderStats(data) {
-  const conv = data.conversation || [];
-  let toolCalls = 0, successes = 0, failures = 0;
-  conv.forEach(m => {
-    if (m.role === 'tool') {
-      toolCalls++;
-      try {
-        const r = JSON.parse(m.content);
-        if (r.success === false) failures++; else successes++;
-      } catch { successes++; }
-    }
-  });
-
-  const row = document.getElementById('statsRow');
-  row.innerHTML = `
-    <div class="stat-card success">
-      <div class="stat-label">Deployed</div>
-      <div class="stat-value">${(data.deployed_sites||[]).length}</div>
-    </div>
-    <div class="stat-card warn">
-      <div class="stat-label">Aborted</div>
-      <div class="stat-value">${(data.aborted_sites||[]).length}</div>
-    </div>
-    <div class="stat-card">
-      <div class="stat-label">Tool Calls</div>
-      <div class="stat-value">${toolCalls}</div>
-    </div>
-    <div class="stat-card">
-      <div class="stat-label">Successes</div>
-      <div class="stat-value" style="color:var(--success)">${successes}</div>
-    </div>
-    <div class="stat-card">
-      <div class="stat-label">Failures</div>
-      <div class="stat-value" style="color:${failures>0?'var(--danger)':'var(--muted)'}">${failures}</div>
-    </div>
-    <div class="stat-card purple">
-      <div class="stat-label">Obstacles</div>
-      <div class="stat-value">${(data.obstacles||[]).length}</div>
-    </div>
-  `;
-}
-
-function renderMap(data) {
-  const svg = document.getElementById('missionMap');
-  const deployed = new Set(data.deployed_sites || []);
-  const aborted = new Set(data.aborted_sites || []);
-
-  // Sites layout: 8 sites, 2 rows, 4 cols
-  // Row 0: sites 1-4 left→right, Row 1: sites 5-8 right→left
-  const PAD = 40, W = 540, rowH = 60;
-  const siteW = W / 4;
-
-  let html = '';
-
-  // Grid lines
-  for (let i = 0; i <= 4; i++) {
-    const x = PAD + i * siteW;
-    html += `<line x1="${x}" y1="20" x2="${x}" y2="110" stroke="#1e2840" stroke-width="1"/>`;
+  function renderAll(data) {
+    renderMeta(data);
+    renderMap(data);
+    renderTimeline(data);
   }
 
-  // Row labels
-  html += `<text x="8" y="55" fill="#4a5878" font-family="Space Mono,monospace" font-size="8" text-anchor="middle" transform="rotate(-90,8,55)">ROW 0 +X</text>`;
-  html += `<text x="8" y="100" fill="#4a5878" font-family="Space Mono,monospace" font-size="8" text-anchor="middle" transform="rotate(-90,8,100)">ROW 1 -X</text>`;
-
-  // Row 0: sites 1-4, left to right
-  const row0Y = 45;
-  const row0Sites = [1,2,3,4];
-  // Draw rope line
-  html += `<line x1="${PAD}" y1="${row0Y}" x2="${PAD + W}" y2="${row0Y}" stroke="#0e4f8e" stroke-width="1.5" stroke-dasharray="4 3"/>`;
-  // Arrow +X
-  html += `<polygon points="${PAD+W+2},${row0Y} ${PAD+W-5},${row0Y-4} ${PAD+W-5},${row0Y+4}" fill="#1a7cd4"/>`;
-
-  row0Sites.forEach((sId, i) => {
-    const cx = PAD + (i + 0.5) * siteW;
-    const color = deployed.has(sId) ? '#22d3a0' : aborted.has(sId) ? '#ef4444' : '#2a3450';
-    const stroke = deployed.has(sId) ? '#22d3a0' : aborted.has(sId) ? '#ef4444' : '#1e2840';
-    html += `<circle cx="${cx}" cy="${row0Y}" r="10" fill="${color}22" stroke="${stroke}" stroke-width="1.5"/>`;
-    html += `<text x="${cx}" y="${row0Y+4}" text-anchor="middle" fill="${color}" font-family="Space Mono,monospace" font-size="9" font-weight="700">${sId}</text>`;
-    if (deployed.has(sId)) {
-      html += `<text x="${cx}" y="${row0Y+20}" text-anchor="middle" fill="#22d3a0" font-family="Space Mono,monospace" font-size="7">✓</text>`;
-    }
-  });
-
-  // Row 1: sites 5-8, right to left
-  const row1Y = 90;
-  const row1Sites = [5,6,7,8];
-  html += `<line x1="${PAD}" y1="${row1Y}" x2="${PAD + W}" y2="${row1Y}" stroke="#3b1f6e" stroke-width="1.5" stroke-dasharray="4 3"/>`;
-  // Arrow -X
-  html += `<polygon points="${PAD-2},${row1Y} ${PAD+5},${row1Y-4} ${PAD+5},${row1Y+4}" fill="#7c3aed"/>`;
-
-  // Site 5 is at right, 8 at left
-  row1Sites.forEach((sId, i) => {
-    const col = 3 - i; // site 5→col3, 6→col2, 7→col1, 8→col0
-    const cx = PAD + (col + 0.5) * siteW;
-    const color = deployed.has(sId) ? '#22d3a0' : aborted.has(sId) ? '#ef4444' : '#2a3450';
-    const stroke = deployed.has(sId) ? '#22d3a0' : aborted.has(sId) ? '#ef4444' : '#1e2840';
-    html += `<circle cx="${cx}" cy="${row1Y}" r="10" fill="${color}22" stroke="${stroke}" stroke-width="1.5"/>`;
-    html += `<text x="${cx}" y="${row1Y+4}" text-anchor="middle" fill="${color}" font-family="Space Mono,monospace" font-size="9" font-weight="700">${sId}</text>`;
-    if (deployed.has(sId)) {
-      html += `<text x="${cx}" y="${row1Y-16}" text-anchor="middle" fill="#22d3a0" font-family="Space Mono,monospace" font-size="7">✓</text>`;
-    }
-  });
-
-  // U-turn arrow connecting row0 end to row1 start
-  const uX = PAD + W + 8;
-  html += `<path d="M${uX-3},${row0Y} Q${uX+18},${row0Y} ${uX+18},${(row0Y+row1Y)/2} Q${uX+18},${row1Y} ${uX-3},${row1Y}" stroke="#7c3aed" stroke-width="1.5" fill="none" stroke-dasharray="3 2"/>`;
-
-  svg.innerHTML = html;
-}
-
-function fnCategory(fn) {
-  if (['navigate_to_waypoint', 'go_around_obstacle'].includes(fn)) return 'nav';
-  if (['start_rope','stop_rope','abort_site'].includes(fn)) return 'rope';
-  return 'other';
-}
-
-function fnIcon(fn) {
-  const icons = {
-    navigate_to_waypoint: '🚀',
-    start_rope: '🔗',
-    stop_rope: '⛔',
-    abort_site: '🚨',
-    pick_and_place: '🦾',
-    get_adjusted_site_waypoints: '📍',
-    turn_around: '↩️',
-    mission_complete: '🏁',
-    go_around_obstacle: '⚠️'
-  };
-  return icons[fn] || '⚙️';
-}
-
-function renderTimeline() {
-  const timeline = document.getElementById('timeline');
-  timeline.innerHTML = '';
-
-  renderedGroups.forEach((group, gi) => {
-    const visible = group.steps.some(s => stepMatchesFilter(s));
-    if (!visible) return;
-
-    const el = document.createElement('div');
-    el.className = 'step-group';
-    el.style.animationDelay = `${gi * 0.04}s`;
-
-    let badgeClass = group.row === 0 ? 'row0' : group.row === 1 ? 'row1' : '';
-    let badgeText = group.label;
-
-    let headerHtml = `
-      <div class="step-group-header">
-        <span class="site-badge ${badgeClass}">${badgeText}</span>
-        ${group.isTransition ? '<span class="step-group-title">U-turn to next row</span>' : ''}
-        ${group.isComplete ? '<span class="step-group-title" style="color:var(--accent)">All sites finalized</span>' : ''}
-        ${group.site ? `<span class="step-group-title">${group.row === 0 ? 'Row 0 (+X direction)' : 'Row 1 (-X direction)'}</span>` : ''}
-      </div>
+  function renderMeta(data) {
+    const meta = document.getElementById('meta');
+    const stats = data.mission_stats || {};
+    const totalSites = data.deployed_sites ? data.deployed_sites.length : 0;
+    
+    meta.innerHTML = `
+      <div class="meta-card"><div class="label">Duration</div><div class="value">${stats.duration_s || '?'}s</div></div>
+      <div class="meta-card"><div class="label">Sites Deployed</div><div class="value">${totalSites} / 16</div></div>
+      <div class="meta-card"><div class="label">Total Tokens</div><div class="value">${(stats.tokens?.total / 1000).toFixed(1)}k</div></div>
+      <div class="meta-card"><div class="label">Iterations</div><div class="value">${stats.iterations || '?'}</div></div>
     `;
+    document.getElementById('mission-id').innerText = data.timestamp || 'LOG';
+  }
 
-    let stepsHtml = '<div class="step-list">';
-    group.steps.forEach(step => {
-      if (!stepMatchesFilter(step)) return;
-      const ok = step.success;
-      const cat = fnCategory(step.fn);
-      const extraClass = step.fn === 'turn_around' ? 'transition' : step.fn === 'mission_complete' ? 'complete' : '';
+  function renderMap(data) {
+    const svg = document.getElementById('missionMap');
+    svg.innerHTML = '';
+    
+    // Deployment Grid: 4 rows of 4 sites in S-pattern
+    const totalSitesExpected = 16;
+    const sites = data.deployed_sites || [];
+    
+    for (let i = 1; i <= totalSitesExpected; i++) {
+      const isDeployed = sites.includes(i);
+      
+      // Calculate layout coordinates for 4x4 S-pattern
+      const row = Math.floor((i - 1) / 4);
+      const pos = (i - 1) % 4;
+      const isEvenRow = row % 2 === 0;
+      
+      // Flip X coordinate for odd rows to create the "S"
+      const x = 60 + (isEvenRow ? pos * 120 : (3 - pos) * 120);
+      const y = 30 + (row * 50);
 
-      const resultStr = JSON.stringify(step.result, null, 2);
-      const argsStr = JSON.stringify(step.args, null, 2);
+      // Draw Site
+      const circle = document.createElementNS("http://www.w3.org/2000/svg", "circle");
+      circle.setAttribute("cx", x);
+      circle.setAttribute("cy", y);
+      circle.setAttribute("r", 15);
+      circle.setAttribute("class", `site-node ${isDeployed ? 'deployed' : ''}`);
+      svg.appendChild(circle);
 
-      stepsHtml += `
-        <div class="step ${ok ? 'success' : 'error'} ${extraClass}" data-cat="${cat}" onclick="this.classList.toggle('expanded')">
-          <div class="step-header">
-            <span>${fnIcon(step.fn)}</span>
-            <span class="fn-name">${step.fn}()</span>
-            <span class="step-status ${ok ? 'ok' : 'fail'}">${ok ? 'OK' : 'FAIL'}</span>
-          </div>
-          ${step.reasoning ? `<div class="step-reasoning">${escHtml(step.reasoning)}</div>` : ''}
-          <div class="expand-hint">↕ click to expand</div>
-          <div class="step-detail"><b>ARGS:</b>\n${escHtml(argsStr)}\n\n<b>RESULT:</b>\n${escHtml(resultStr)}</div>
+      const text = document.createElementNS("http://www.w3.org/2000/svg", "text");
+      text.setAttribute("x", x);
+      text.setAttribute("y", y + 4);
+      text.setAttribute("text-anchor", "middle");
+      text.setAttribute("class", `site-label ${isDeployed ? 'deployed' : ''}`);
+      text.textContent = i;
+      svg.appendChild(text);
+    }
+  }
+
+  function groupBySite(data) {
+    const sites = {};
+    const messages = data.messages || [];
+    
+    messages.forEach(msg => {
+      if (msg.role !== 'assistant' || !msg.tool_calls) return;
+      
+      msg.tool_calls.forEach(tc => {
+        const fn = tc.function.name;
+        const args = JSON.parse(tc.function.arguments);
+        const reasoning = msg.content;
+
+        // Try to find the result in the next message
+        const resultMsg = messages.find(m => m.tool_call_id === tc.id);
+        const result = resultMsg ? JSON.parse(resultMsg.content) : null;
+
+        if (['get_site_waypoints', 'deploy_antenna', 'stop_rope', 'validate_deployment'].includes(fn)) {
+          const siteId = args.site_id;
+          if (!sites[siteId]) {
+            sites[siteId] = {
+              id: siteId,
+              row: Math.floor((siteId - 1) / 4),
+              steps: []
+            };
+          }
+          sites[siteId].steps.push({ fn, args, result, reasoning });
+        }
+      });
+    });
+    return sites;
+  }
+
+  function renderTimeline(data) {
+    const timeline = document.getElementById('timeline');
+    timeline.innerHTML = '';
+    const siteData = groupBySite(data);
+    
+    const rows = { 0: [], 1: [], 2: [], 3: [] };
+    Object.values(siteData).forEach(s => {
+      if (rows[s.row]) rows[s.row].push(s);
+    });
+
+    Object.keys(rows).forEach(rowIdx => {
+      const siteList = rows[rowIdx].sort((a, b) => a.id - b.id);
+      if (siteList.length === 0) return;
+
+      const el = document.createElement('div');
+      el.className = 'timeline-row';
+      const headerHtml = `
+        <div class="row-header">
+          <div class="row-label">Row ${rowIdx}</div>
+          <div class="row-stats">${siteList.length} sites</div>
         </div>
       `;
+
+      let sitesHtml = '<div style="display:grid; grid-template-columns: repeat(2, 1fr); gap: 2rem;">';
+      siteList.forEach(site => {
+        sitesHtml += `<div class="site-group">
+          <div><span class="site-badge row${rowIdx}">SITE ${site.id}</span></div>
+          ${site.steps.map(step => `
+            <div class="step" onclick="this.classList.toggle('expanded')">
+              <div class="step-header">
+                <span class="fn-name">${step.fn}()</span>
+                <span style="color:${step.result?.success ? 'var(--success)' : 'var(--danger)'}">${step.result?.success ? 'OK' : 'FAIL'}</span>
+              </div>
+              <div class="step-reasoning">${step.reasoning}</div>
+              <div class="expand-hint">↕ details</div>
+              <div class="step-detail">ARGS: ${JSON.stringify(step.args, null, 2)}\n\nRESULT: ${JSON.stringify(step.result, null, 2)}</div>
+            </div>
+          `).join('')}
+        </div>`;
+      });
+      sitesHtml += '</div>';
+
+      el.innerHTML = headerHtml + sitesHtml;
+      timeline.appendChild(el);
     });
-    stepsHtml += '</div>';
-
-    el.innerHTML = headerHtml + stepsHtml;
-    timeline.appendChild(el);
-  });
-}
-
-function stepMatchesFilter(step) {
-  if (currentFilter === 'all') return true;
-  return fnCategory(step.fn) === currentFilter;
-}
-
-function filterSteps(filter, btn) {
-  currentFilter = filter;
-  document.querySelectorAll('.toggle-btn').forEach(b => b.classList.remove('active'));
-  btn.classList.add('active');
-  renderTimeline();
-}
-
-function escHtml(s) {
-  return String(s).replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;');
-}
-
-// ── Init with sample ──
-renderLog(SAMPLE);
+  }
 </script>
+
 </body>
 </html>
