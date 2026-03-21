@@ -346,35 +346,181 @@
   }
   .step.complete .fn-name { color: var(--accent); }
 
-  /* ── Upload zone ── */
-  .upload-zone {
-    border: 2px dashed var(--border);
-    border-radius: 12px;
-    padding: 48px 24px;
-    text-align: center;
-    cursor: pointer;
-    transition: border-color 0.2s, background 0.2s;
-    margin-bottom: 36px;
+  /* ── File picker bar ── */
+  .picker-bar {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    flex-wrap: wrap;
+    background: var(--surface);
+    border: 1px solid var(--border);
+    border-radius: 8px;
+    padding: 12px 16px;
+    margin-bottom: 28px;
   }
 
-  .upload-zone:hover, .upload-zone.drag { border-color: var(--accent); background: rgba(0,229,255,0.03); }
+  .picker-label {
+    font-family: 'Space Mono', monospace;
+    font-size: 0.68rem;
+    color: var(--muted);
+    text-transform: uppercase;
+    letter-spacing: 0.1em;
+    white-space: nowrap;
+  }
 
-  .upload-zone p { color: var(--muted); font-size: 0.9rem; margin-top: 10px; }
-  .upload-zone .upload-icon { font-size: 2.5rem; opacity: 0.4; }
-  .upload-zone .upload-btn {
-    display: inline-block;
-    margin-top: 14px;
-    padding: 8px 20px;
+  .picker-select {
+    flex: 1;
+    min-width: 180px;
     background: var(--surface2);
     border: 1px solid var(--border);
     border-radius: 5px;
-    font-size: 0.8rem;
+    color: var(--text);
     font-family: 'Space Mono', monospace;
+    font-size: 0.75rem;
+    padding: 7px 10px;
+    cursor: pointer;
+    transition: border-color 0.15s;
+    appearance: none;
+    background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='12' height='12' viewBox='0 0 12 12'%3E%3Cpath fill='%234a5878' d='M6 8L1 3h10z'/%3E%3C/svg%3E");
+    background-repeat: no-repeat;
+    background-position: right 10px center;
+    padding-right: 28px;
+  }
+
+  .picker-select:focus { outline: none; border-color: var(--accent); }
+  .picker-select option { background: #111520; }
+
+  .picker-divider {
+    font-family: 'Space Mono', monospace;
+    font-size: 0.65rem;
+    color: var(--dim);
+  }
+
+  .picker-browse {
+    display: inline-flex;
+    align-items: center;
+    gap: 6px;
+    padding: 7px 14px;
+    background: var(--surface2);
+    border: 1px solid var(--border);
+    border-radius: 5px;
+    font-family: 'Space Mono', monospace;
+    font-size: 0.72rem;
     color: var(--accent);
     cursor: pointer;
-    transition: background 0.15s;
+    transition: border-color 0.15s, background 0.15s;
+    white-space: nowrap;
   }
-  .upload-zone .upload-btn:hover { background: var(--dim); }
+
+  .picker-browse:hover { border-color: var(--accent); background: rgba(0,229,255,0.06); }
+
+  .picker-filename {
+    font-family: 'Space Mono', monospace;
+    font-size: 0.68rem;
+    color: var(--muted);
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    max-width: 200px;
+  }
+
+  /* ── File picker cards (old, kept for reference) ── */
+  .picker-section {
+    margin-bottom: 36px;
+  }
+
+  .picker-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(220px, 1fr));
+    gap: 10px;
+    margin-top: 4px;
+  }
+
+  .picker-card {
+    background: var(--surface);
+    border: 1px solid var(--border);
+    border-radius: 8px;
+    padding: 14px 16px;
+    cursor: pointer;
+    transition: border-color 0.15s, background 0.15s;
+    display: flex;
+    flex-direction: column;
+    gap: 4px;
+    text-align: left;
+  }
+
+  .picker-card:hover {
+    border-color: var(--accent);
+    background: rgba(0,229,255,0.03);
+  }
+
+  .picker-card.active {
+    border-color: var(--accent);
+    background: rgba(0,229,255,0.06);
+  }
+
+  .picker-card .pc-name {
+    font-family: 'Space Mono', monospace;
+    font-size: 0.75rem;
+    color: var(--accent);
+    font-weight: 700;
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+  }
+
+  .picker-card .pc-meta {
+    font-family: 'Space Mono', monospace;
+    font-size: 0.65rem;
+    color: var(--muted);
+  }
+
+  .picker-card .pc-icon {
+    font-size: 1.1rem;
+    margin-bottom: 4px;
+  }
+
+  .picker-loading {
+    font-family: 'Space Mono', monospace;
+    font-size: 0.72rem;
+    color: var(--muted);
+    padding: 12px 0;
+  }
+
+  .picker-or {
+    font-family: 'Space Mono', monospace;
+    font-size: 0.65rem;
+    color: var(--dim);
+    text-align: center;
+    margin: 12px 0 8px;
+    display: flex;
+    align-items: center;
+    gap: 10px;
+  }
+
+  .picker-or::before, .picker-or::after {
+    content: '';
+    flex: 1;
+    height: 1px;
+    background: var(--border);
+  }
+
+  .upload-btn-small {
+    display: inline-flex;
+    align-items: center;
+    gap: 6px;
+    padding: 7px 16px;
+    background: var(--surface2);
+    border: 1px solid var(--border);
+    border-radius: 5px;
+    font-size: 0.72rem;
+    font-family: 'Space Mono', monospace;
+    color: var(--muted);
+    cursor: pointer;
+    transition: all 0.15s;
+  }
+
+  .upload-btn-small:hover { border-color: var(--accent); color: var(--accent); }
 
   #fileInput { display: none; }
 
@@ -424,12 +570,18 @@
     <div class="meta-pills" id="metaPills"></div>
   </header>
 
-  <div class="upload-zone" id="uploadZone">
-    <div class="upload-icon">📡</div>
-    <p>Drop a mission log JSON file here, or click to browse</p>
-    <p style="font-size:0.75rem; margin-top:4px; color: var(--dim)">The page is pre-loaded with a sample log — upload your own to replace it</p>
-    <label class="upload-btn" for="fileInput">Choose File</label>
+  <div class="picker-bar" id="pickerBar">
+    <span class="picker-label">Mission</span>
+    <select class="picker-select" id="missionSelect">
+      <option value="">— select a mission log —</option>
+    </select>
+    <span class="picker-divider">or</span>
+    <label class="picker-browse" for="fileInput">
+      <svg width="13" height="13" viewBox="0 0 16 16" fill="none"><path d="M2 13V5l4-3h6a1 1 0 011 1v10a1 1 0 01-1 1H3a1 1 0 01-1-1z" stroke="currentColor" stroke-width="1.4"/><path d="M6 2v3H2" stroke="currentColor" stroke-width="1.4"/></svg>
+      Browse file
+    </label>
     <input type="file" id="fileInput" accept=".json">
+    <span class="picker-filename" id="pickerFilename"></span>
   </div>
   <div id="errorMsg" class="error-msg" style="display:none"></div>
 
@@ -462,20 +614,48 @@ const SAMPLE = {"timestamp":"20260222_190037","model":"gpt-5-nano","deployed_sit
 let currentFilter = 'all';
 let renderedGroups = [];
 
-// ── Upload ──
-const uploadZone = document.getElementById('uploadZone');
-const fileInput = document.getElementById('fileInput');
+// ── File picker: load manifest from data/index.json ──
+const missionSelect = document.getElementById('missionSelect');
 
-uploadZone.addEventListener('dragover', e => { e.preventDefault(); uploadZone.classList.add('drag'); });
-uploadZone.addEventListener('dragleave', () => uploadZone.classList.remove('drag'));
-uploadZone.addEventListener('drop', e => {
-  e.preventDefault(); uploadZone.classList.remove('drag');
-  const file = e.dataTransfer.files[0];
-  if (file) readFile(file);
+fetch('data/index.json')
+  .then(r => r.json())
+  .then(files => {
+    files.forEach(entry => {
+      const opt = document.createElement('option');
+      // entry can be a plain filename string or { file, label }
+      const file = typeof entry === 'string' ? entry : entry.file;
+      const label = typeof entry === 'string' ? file.replace('.json','') : (entry.label || file);
+      opt.value = file;
+      opt.textContent = label;
+      missionSelect.appendChild(opt);
+    });
+  })
+  .catch(() => {
+    // data/index.json not found — show a hint but don't break anything
+    const opt = document.createElement('option');
+    opt.value = '';
+    opt.textContent = '(no data/index.json found)';
+    opt.disabled = true;
+    missionSelect.appendChild(opt);
+  });
+
+missionSelect.addEventListener('change', () => {
+  const file = missionSelect.value;
+  if (!file) return;
+  document.getElementById('pickerFilename').textContent = '';
+  fetch('data/' + file)
+    .then(r => r.json())
+    .then(data => { showError(''); renderLog(data); })
+    .catch(err => showError('Could not load ' + file + ': ' + err.message));
 });
+
+// ── Browse-file fallback ──
+const fileInput = document.getElementById('fileInput');
 fileInput.addEventListener('change', () => { if (fileInput.files[0]) readFile(fileInput.files[0]); });
 
 function readFile(file) {
+  document.getElementById('pickerFilename').textContent = file.name;
+  missionSelect.value = '';
   const reader = new FileReader();
   reader.onload = e => {
     try {
