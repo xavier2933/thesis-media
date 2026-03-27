@@ -573,7 +573,6 @@
   <div class="picker-bar" id="pickerBar">
     <span class="picker-label">Mission</span>
     <select class="picker-select" id="missionSelect">
-      <option value="">— select a mission log —</option>
     </select>
     <span class="picker-divider">or</span>
     <label class="picker-browse" for="fileInput">
@@ -617,6 +616,8 @@ let renderedGroups = [];
 // ── File picker: load manifest from data/index.json ──
 const missionSelect = document.getElementById('missionSelect');
 
+const DEFAULT_MISSION = 'mission_20260309_215941.json';
+
 fetch('data/index.json')
   .then(r => r.json())
   .then(files => {
@@ -629,9 +630,14 @@ fetch('data/index.json')
       opt.textContent = label;
       missionSelect.appendChild(opt);
     });
+    // Auto-load the default mission
+    missionSelect.value = DEFAULT_MISSION;
+    fetch('data/' + DEFAULT_MISSION)
+      .then(r => r.json())
+      .then(data => { showError(''); renderLog(data); })
+      .catch(err => showError('Could not load default: ' + err.message));
   })
   .catch(() => {
-    // data/index.json not found — show a hint but don't break anything
     const opt = document.createElement('option');
     opt.value = '';
     opt.textContent = '(no data/index.json found)';
